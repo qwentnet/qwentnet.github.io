@@ -2,71 +2,109 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>qwent.net</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DedSec Access</title>
   <style>
     body {
+      margin: 0;
+      padding: 0;
       background: black;
-      color: #00ff99;
-      font-family: monospace;
-      padding: 20px;
-      white-space: pre-wrap;
       overflow: hidden;
+      font-family: "Courier New", Courier, monospace;
+      color: #00ff9f;
+      font-size: 18px;
     }
 
-    /* эффект мерцания */
-    .blink {
-      animation: blink 1s step-start infinite;
+    /* Мерцающий фон */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 159, 0.1),
+        rgba(0, 255, 159, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      opacity: 0.1;
+      pointer-events: none;
+      animation: flicker 2s infinite;
     }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 0.1;
+      }
+      20%, 24%, 55% {
+        opacity: 0.3;
+      }
+    }
+
+    /* Терминал */
+    #terminal {
+      padding: 20px;
+      white-space: pre-line;
+      line-height: 1.5em;
+      text-shadow: 0 0 8px #00ff9f;
+    }
+
+    /* Курсор */
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      background: #00ff9f;
+      animation: blink 0.8s step-start infinite;
+    }
+
     @keyframes blink {
-      50% { opacity: 0; }
+      0%, 50% { opacity: 1; }
+      50.1%, 100% { opacity: 0; }
     }
 
-    /* эффект глитча */
+    /* Глитч эффект для текста */
     .glitch {
       position: relative;
-      display: inline-block;
-      animation: glitch-skew 1s infinite linear alternate-reverse;
+      color: #00ff9f;
+      font-weight: bold;
     }
     .glitch::before, .glitch::after {
       content: attr(data-text);
       position: absolute;
       left: 0;
+      top: 0;
       width: 100%;
+      color: #00ff9f;
       overflow: hidden;
       clip: rect(0, 900px, 0, 0);
     }
     .glitch::before {
-      animation: glitch-top 2s infinite linear alternate-reverse;
-      color: #ff00ff;
-      z-index: -1;
+      animation: glitchTop 1s infinite linear alternate-reverse;
+      color: #ff005e;
     }
     .glitch::after {
-      animation: glitch-bottom 1.5s infinite linear alternate-reverse;
-      color: #00ffff;
-      z-index: -1;
+      animation: glitchBottom 1s infinite linear alternate-reverse;
+      color: #00f7ff;
     }
 
-    @keyframes glitch-skew {
-      0% { transform: skew(0deg); }
-      20% { transform: skew(5deg); }
-      40% { transform: skew(-5deg); }
-      60% { transform: skew(3deg); }
-      80% { transform: skew(-3deg); }
-      100% { transform: skew(0deg); }
-    }
-    @keyframes glitch-top {
+    @keyframes glitchTop {
       0% { clip: rect(0, 9999px, 0, 0); }
-      20% { clip: rect(0, 9999px, 15px, 0); transform: translate(-5px, -5px); }
-      40% { clip: rect(0, 9999px, 8px, 0); transform: translate(5px, 5px); }
-      60% { clip: rect(0, 9999px, 12px, 0); transform: translate(-3px, 3px); }
+      50% { clip: rect(0, 9999px, 100%, 0); transform: translate(-5px, -5px); }
       100% { clip: rect(0, 9999px, 0, 0); }
     }
-    @keyframes glitch-bottom {
+
+    @keyframes glitchBottom {
       0% { clip: rect(0, 9999px, 0, 0); }
-      20% { clip: rect(5px, 9999px, 20px, 0); transform: translate(5px, 5px); }
-      40% { clip: rect(10px, 9999px, 25px, 0); transform: translate(-5px, -5px); }
-      60% { clip: rect(8px, 9999px, 18px, 0); transform: translate(3px, -3px); }
+      50% { clip: rect(0, 9999px, 100%, 0); transform: translate(5px, 5px); }
       100% { clip: rect(0, 9999px, 0, 0); }
+    }
+
+    a {
+      color: #00ff9f;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -74,45 +112,55 @@
   <div id="terminal"></div>
 
   <script>
-    const terminal = document.getElementById("terminal");
+    const terminal = document.getElementById('terminal');
 
     const lines = [
-      "<span class='glitch' data-text='qwent.net'>qwent.net</span>",
+      "[BOOTING UP SYSTEM...]",
+      "Initializing secure connection...",
+      "Bypassing firewall [ OK ]",
+      "Decrypting access protocols [ OK ]",
+      "Routing IP through multiple proxies...",
+      "Access node: 104.22.1.47 established.",
+      "Authenticating...",
       "",
-      "[*] Initializing connection to remote server...",
-      "[*] Establishing secure channel...",
-      "[*] Bypassing firewall...",
-      "[*] Injecting payload...",
-      "[*] Access granted.",
+      "Login: qwentsub",
+      "Password: *********",
       "",
-      "login: qwentsub",
-      "password: iloveqwent",
+      "Access granted. Welcome, qwentsub.",
+      "Loading profile data...",
       "",
-      ">>> Welcome, <span class='glitch' data-text='qwentsub'>qwentsub</span>.",
-      "",
-      "<span class='glitch' data-text='qwent.net'>qwent.net</span>",
-      "qwent telegram: <a href='https://t.me/qwentmake' target='_blank'>https://t.me/qwentmake</a>",
-      "ceo: @saltsnvff , @xwrnme , @mxnrw",
-      "",
-      ">>> Session established. <span class='blink'>█</span>"
+      "███████████████████████████████████████████",
+      "   qwent.net",
+      "   qwent telegram: https://t.me/qwentmake",
+      "   ceo: @saltsnvff , @xwrnme , @mxnrw",
+      "███████████████████████████████████████████"
     ];
 
-    let i = 0;
+    let lineIndex = 0;
+    let charIndex = 0;
+    let currentLine = '';
+    let output = '';
 
     function typeLine() {
-      if (i < lines.length) {
-        const line = lines[i];
-        let j = 0;
-        const interval = setInterval(() => {
-          terminal.innerHTML += line[j] || "";
-          j++;
-          if (j >= line.length) {
-            clearInterval(interval);
-            terminal.innerHTML += "\n";
-            i++;
-            setTimeout(typeLine, 400); 
-          }
-        }, 20 + Math.random()*30); // случайная скорость печати
+      if (lineIndex < lines.length) {
+        currentLine = lines[lineIndex];
+        if (charIndex < currentLine.length) {
+          output += currentLine[charIndex];
+          terminal.innerHTML = output + '<span class="cursor"></span>';
+          charIndex++;
+          setTimeout(typeLine, 35); // скорость печати
+        } else {
+          output += '\n';
+          terminal.innerHTML = output;
+          charIndex = 0;
+          lineIndex++;
+          setTimeout(typeLine, 300);
+        }
+      } else {
+        // Добавляем глитч-эффект для заголовков
+        terminal.innerHTML = terminal.innerHTML
+          .replace("qwent.net", `<span class="glitch" data-text="qwent.net">qwent.net</span>`)
+          .replace("https://t.me/qwentmake", `<a href="https://t.me/qwentmake" target="_blank">https://t.me/qwentmake</a>`);
       }
     }
 
