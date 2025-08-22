@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DedSec Terminal</title>
+  <title>qwent.net</title>
   <style>
     body {
       background: black;
@@ -77,6 +77,8 @@
     const terminal = document.getElementById("terminal");
 
     const lines = [
+      "<span class='glitch' data-text='qwent.net'>qwent.net</span>",
+      "",
       "[*] Initializing connection to remote server...",
       "[*] Establishing secure channel...",
       "[*] Bypassing firewall...",
@@ -110,7 +112,7 @@
             i++;
             setTimeout(typeLine, 400); 
           }
-        }, 20 + Math.random()*30); // случайная скорость печати
+        }, 20 + Math.random()*30);
       }
     }
 
