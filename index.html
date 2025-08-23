@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="ru">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -18,141 +19,111 @@
       color: var(--neon);
       font-family: "Courier New", Courier, monospace;
       overflow: hidden;
-    }/* CRT scanlines + subtle flicker */
-body::before {
-  content: "";
-  position: fixed; inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 255, 159, 0.06) 0px,
-    rgba(0, 255, 159, 0.06) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  animation: flicker 2.7s infinite;
-}
-@keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: .16 }
-  20%, 24%, 55% { opacity: .28 }
-}
+    }
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 159, 0.06) 0px,
+        rgba(0, 255, 159, 0.06) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      animation: flicker 2.7s infinite;
+    }
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: .16 }
+      20%, 24%, 55% { opacity: .28 }
+    }
 
-/* Static noise overlay */
-.noise {
-  position: fixed; inset: 0; pointer-events: none;
-  background-image: url("https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif");
-  background-size: cover; opacity: .035; mix-blend-mode: screen;
-}
+    .noise {
+      position: fixed; inset: 0; pointer-events: none;
+      background-image: url("https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif");
+      background-size: cover; opacity: .035; mix-blend-mode: screen;
+    }
+    .aberration { filter: drop-shadow(0 0 6px var(--neon)); }
 
-/* RGB aberration pulse */
-.aberration { filter: drop-shadow(0 0 6px var(--neon)); }
+    .wrap { height: 100%; display: grid; grid-template-rows: auto 1fr; }
 
-.wrap { height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
+    #globe-top {
+      white-space: pre; text-align: center; line-height: 1.0em; font-size: 14px;
+      text-shadow: 0 0 6px var(--neon), 0 0 18px var(--neon);
+      padding: 8px 6px;
+      user-select: none;
+      animation: glow 4s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 4px var(--neon), 0 0 8px var(--neon); }
+      to   { text-shadow: 0 0 10px var(--neon), 0 0 26px var(--neon); }
+    }
 
-#globe-top, #globe-bottom {
-  white-space: pre; text-align: center; line-height: 1.0em; font-size: 14px;
-  text-shadow: 0 0 6px var(--neon), 0 0 18px var(--neon);
-  padding: 8px 6px;
-  user-select: none;
-  animation: glow 4s ease-in-out infinite alternate;
-}
-@keyframes glow {
-  from { text-shadow: 0 0 4px var(--neon), 0 0 8px var(--neon); }
-  to   { text-shadow: 0 0 10px var(--neon), 0 0 26px var(--neon); }
-}
+    #terminal {
+      position: relative; padding: 18px 20px; overflow-y: auto; height: 100%;
+      white-space: pre-wrap; line-height: 1.12em;
+      text-shadow: 0 0 8px var(--neon), 0 0 20px var(--neon);
+      animation: textFlicker 3.5s infinite;
+    }
+    @keyframes textFlicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 8px var(--neon), 0 0 20px var(--neon); }
+      20%, 24%, 55% { text-shadow: 0 0 3px var(--neon), 0 0 6px var(--neon); }
+    }
 
-#terminal {
-  position: relative; padding: 18px 20px; overflow: auto; height: 100%;
-  white-space: pre-wrap; line-height: 1.12em;
-  text-shadow: 0 0 8px var(--neon), 0 0 20px var(--neon);
-  animation: textFlicker 3.5s infinite;
-}
-@keyframes textFlicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 8px var(--neon), 0 0 20px var(--neon); }
-  20%, 24%, 55% { text-shadow: 0 0 3px var(--neon), 0 0 6px var(--neon); }
-}
+    .sweep { position: absolute; left: 0; right: 0; height: 42px; top: -42px;
+      background: linear-gradient(180deg, rgba(0,255,159,0) 0%, rgba(0,255,159,.06) 60%, rgba(0,255,159,0) 100%);
+      filter: blur(2px);
+      animation: sweep 3.2s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes sweep { to { transform: translateY(120%); } }
 
-/* Sweep highlight like scanline */
-.sweep { position: absolute; left: 0; right: 0; height: 42px; top: -42px;
-  background: linear-gradient(180deg, rgba(0,255,159,0) 0%, rgba(0,255,159,.06) 60%, rgba(0,255,159,0) 100%);
-  filter: blur(2px);
-  animation: sweep 3.2s linear infinite;
-  pointer-events: none;
-}
-@keyframes sweep { to { transform: translateY(120%); } }
+    .cursor { display: inline-block; width: 10px; height: 1em; background: var(--neon);
+      animation: blink .8s step-start infinite; vertical-align: -2px; }
+    @keyframes blink { 0%,50%{opacity:1} 50.1%,100%{opacity:0} }
 
-.cursor { display: inline-block; width: 10px; height: 1em; background: var(--neon);
-  animation: blink .8s step-start infinite; vertical-align: -2px; }
-@keyframes blink { 0%,50%{opacity:1} 50.1%,100%{opacity:0} }
+    .glitch { position: relative; font-weight: 700; display: inline-block; }
+    .glitch::before, .glitch::after {
+      content: attr(data-text); position: absolute; inset: 0; pointer-events: none;
+    }
+    .glitch::before { left: 2px; text-shadow: -2px 0 var(--pink); mix-blend-mode: screen; animation: glitch-1 1.8s infinite; }
+    .glitch::after  { left: -2px; text-shadow: 2px 0 var(--cyan);  mix-blend-mode: screen; animation: glitch-2 2.3s infinite; }
 
-/* DedSec-style glitch for qwent.net */
-.glitch { position: relative; font-weight: 700; display: inline-block; }
-.glitch::before, .glitch::after {
-  content: attr(data-text); position: absolute; inset: 0; pointer-events: none;
-}
-.glitch::before { left: 2px; text-shadow: -2px 0 var(--pink); mix-blend-mode: screen; animation: glitch-1 1.8s infinite; }
-.glitch::after  { left: -2px; text-shadow: 2px 0 var(--cyan);  mix-blend-mode: screen; animation: glitch-2 2.3s infinite; }
-@keyframes glitch-1 {
-  0% { clip-path: inset(10% 0 70% 0); transform: skew(0.6deg) }
-  20%{ clip-path: inset(40% 0 40% 0); transform: skew(-0.8deg) }
-  40%{ clip-path: inset(80% 0 5% 0);  transform: skew(0.4deg) }
-  60%{ clip-path: inset(5% 0 80% 0);  transform: skew(-0.6deg) }
-  80%{ clip-path: inset(30% 0 50% 0); transform: skew(0.2deg) }
-  100%{ clip-path: inset(60% 0 20% 0); transform: skew(-0.2deg) }
-}
-@keyframes glitch-2 {
-  0% { clip-path: inset(60% 0 20% 0); transform: skew(-0.3deg) }
-  25%{ clip-path: inset(5% 0 80% 0);  transform: skew(0.6deg) }
-  50%{ clip-path: inset(30% 0 50% 0); transform: skew(-0.4deg) }
-  75%{ clip-path: inset(80% 0 5% 0);  transform: skew(0.5deg) }
-  100%{ clip-path: inset(10% 0 70% 0); transform: skew(-0.2deg) }
-}
+    @keyframes glitch-1 {
+      0% { clip-path: inset(10% 0 70% 0); transform: skew(0.6deg) }
+      20%{ clip-path: inset(40% 0 40% 0); transform: skew(-0.8deg) }
+      40%{ clip-path: inset(80% 0 5% 0);  transform: skew(0.4deg) }
+      60%{ clip-path: inset(5% 0 80% 0);  transform: skew(-0.6deg) }
+      80%{ clip-path: inset(30% 0 50% 0); transform: skew(0.2deg) }
+      100%{ clip-path: inset(60% 0 20% 0); transform: skew(-0.2deg) }
+    }
+    @keyframes glitch-2 {
+      0% { clip-path: inset(60% 0 20% 0); transform: skew(-0.3deg) }
+      25%{ clip-path: inset(5% 0 80% 0);  transform: skew(0.6deg) }
+      50%{ clip-path: inset(30% 0 50% 0); transform: skew(-0.4deg) }
+      75%{ clip-path: inset(80% 0 5% 0);  transform: skew(0.5deg) }
+      100%{ clip-path: inset(10% 0 70% 0); transform: skew(-0.2deg) }
+    }
 
-/* Links as neon text but clickable */
-a { color: var(--neon); text-decoration: none; cursor: pointer;
-    text-shadow: 0 0 6px var(--neon), 0 0 14px var(--neon); transition: .18s; }
-a:hover { color: var(--pink); text-shadow: 0 0 10px var(--pink), 0 0 22px var(--pink); }
-a:active { color: var(--cyan); }
-
+    a { color: var(--neon); text-decoration: none; cursor: pointer;
+        text-shadow: 0 0 6px var(--neon), 0 0 14px var(--neon); transition: .18s; }
+    a:hover { color: var(--pink); text-shadow: 0 0 10px var(--pink), 0 0 22px var(--pink); }
+    a:active { color: var(--cyan); }
   </style>
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
   <div class="wrap aberration">
-    <!-- Верхняя часть глобуса -->
     <div id="globe-top">
-                                   ..:+#@@@@@@@@%%%%@@@@@@@@#+:.                                    
-                              .:+#@@@@@%*@@==%#--##--#%==@@*%@@@@@#+:.                              
-                         ..:*@@@@*#@*::%#:..%=.  *#. .=%. .#%::*@#*@@@@*-..                         
-                      ..-%@@@@@#%@%**%@#***@%****%%****%@***#@%**%@%#@@@@@%-..                      
-                    .:%@%*@*..%#...-@-....**.....**.....**....-@-...*+..+*=*#%:.                    
-                  .*@@=*@-..##:. .+%..  .=%:    .++.    :%=.  ..%+. ..+=..-+==@@*.                  
-               .:#@%-+@-..=@-.  .*#.    .%=.     *#.    .=%.    .#*.  .-@=..-@+-%@#:.               
-             .:#@@+=@*---#%-----*%------+%-------##-------%+------%*-----%#---*@==@@#:.             
-           ..#@@-.##...:@=.....*#.......%-.......##.......-%.......#*.....=@:...##.-@@*.            
-          .=@@*.-@-.  -@-.    =%.      =%.       *#.      .%=.    ..%=.   .-@-. .-@-.*@@=.          
-    </div><!-- Терминал -->
-<div id="terminal"><div class="sweep"></div></div>
+      (ASCII-глобус сверху)
+    </div>
+    <div id="terminal"><div class="sweep"></div></div>
+  </div>
 
-<!-- Нижняя часть глобуса -->
-<div id="globe-bottom">
-      .-@@*.:@=.  :@-.    -%.      =%.       *#.      .%=.    ..%-.   .-@:  .=@:.*@@-.          
-       ..*@@=:##..::@=....:*%:.....:%=......:##:......=%:.....:%*:....=@::.:##:=@@*..           
-          .#@@+=@*---#%-----*%------+@-------##-------%+------%*-----%#---*@=+@@#..             
-            :#@%-+@=..=@-.  .*#.    .%+.     *#.    .=%.    .#*.  .-@=..=@+-%@#:.               
-             ..*@@+*@=..#%:. .+%..  .-%:    .+=.    :%-.  ..%+. .:%#..=@*+@@*.                  
-                .:%@@+@#..%%...-@-....+*.....*#.....*+....-@-...%%..#@+@@%:.                    
-                  ..-%@@@@@*#@%**%@****%%****%%****%%****@%**%@#*@@@@@%-..                      
-                      .:*@@@@*#@*-:%#:..%+.  *#. .=%..:#%:-*@#*@@@@*:.                          
-                          ..+#@@@@@@*@@+=%#--##--#%=+@@*%@@@@@#+..                              
-                                ..=#@@@@@@@@@%%@@@@@@@@@#=..                                    
-</div>
-
-  </div>  <script>
+  <script>
     document.addEventListener("DOMContentLoaded", () => {
       const terminal = document.getElementById('terminal');
 
-      // Основные строки «терминала» + кликабельная ссылка, выведенная текстом
       const mid = [
         "",
         "[BOOTING UP SYSTEM...]",
@@ -177,16 +148,12 @@ a:active { color: var(--cyan); }
       ];
 
       const top = document.getElementById('globe-top').textContent.split('\n');
-      const bottom = document.getElementById('globe-bottom').textContent.split('\n');
-
-      // Собираем итоговую последовательность вывода
-      const lines = top.concat([''], mid, [''], bottom);
+      const lines = top.concat([''], mid);
 
       let lineIndex = 0;
       let charIndex = 0;
       let output = '';
 
-      // Печатаем курсор сразу
       terminal.innerHTML = '<div class="sweep"></div><span class="cursor"></span>';
 
       function typeLine() {
@@ -195,27 +162,29 @@ a:active { color: var(--cyan); }
           if (charIndex < currentLine.length) {
             output += currentLine[charIndex];
             terminal.innerHTML = '<div class="sweep"></div>' + output + '<span class="cursor"></span>';
-            // Скорость печати: быстрее для длинных ASCII-строк
+            terminal.scrollTop = terminal.scrollHeight; // авто-скролл вниз
             const speed = currentLine.length > 100 ? 1 : 3;
             charIndex++;
             setTimeout(typeLine, speed);
           } else {
             output += '\n';
             terminal.innerHTML = '<div class="sweep"></div>' + output + '<span class="cursor"></span>';
+            terminal.scrollTop = terminal.scrollHeight; // авто-скролл вниз
             charIndex = 0;
             lineIndex++;
             setTimeout(typeLine, 18);
           }
         } else {
-          // Пост-обработка: глитч для qwent.net
           terminal.innerHTML = terminal.innerHTML.replace(
             /qwent\.net/g,
             '<span class="glitch" data-text="qwent.net">qwent.net<\/span>'
           );
+          terminal.scrollTop = terminal.scrollHeight;
         }
       }
 
       typeLine();
     });
-  </script></body>
+  </script>
+</body>
 </html>
