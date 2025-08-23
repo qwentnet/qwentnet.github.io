@@ -12,10 +12,9 @@
       overflow: hidden;
       font-family: "Courier New", Courier, monospace;
       color: #00ff9f;
-      font-size: 16px; /* чуть меньше, чтобы ASCII влазил */
+      font-size: 16px;
     }
 
-    /* Мерцающий фон */
     body::before {
       content: "";
       position: fixed;
@@ -33,15 +32,10 @@
     }
 
     @keyframes flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        opacity: 0.1;
-      }
-      20%, 24%, 55% {
-        opacity: 0.3;
-      }
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 0.1; }
+      20%, 24%, 55% { opacity: 0.3; }
     }
 
-    /* Терминал */
     #terminal {
       padding: 20px;
       white-space: pre;
@@ -49,7 +43,6 @@
       text-shadow: 0 0 8px #00ff9f;
     }
 
-    /* Курсор */
     .cursor {
       display: inline-block;
       width: 10px;
@@ -62,7 +55,6 @@
       50.1%, 100% { opacity: 0; }
     }
 
-    /* Глитч эффект для текста */
     .glitch {
       position: relative;
       color: #00ff9f;
@@ -92,26 +84,21 @@
       50% { clip: rect(0, 9999px, 100%, 0); transform: translate(-5px, -5px); }
       100% { clip: rect(0, 9999px, 0, 0); }
     }
-
     @keyframes glitchBottom {
       0% { clip: rect(0, 9999px, 0, 0); }
       50% { clip: rect(0, 9999px, 100%, 0); transform: translate(5px, 5px); }
       100% { clip: rect(0, 9999px, 0, 0); }
     }
 
-    a {
-      color: #00ff9f;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
+    a { color: #00ff9f; text-decoration: none; }
+    a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <div id="terminal"></div>
 
   <script>
+  document.addEventListener("DOMContentLoaded", () => {
     const terminal = document.getElementById('terminal');
 
     const asciiArt = `
@@ -128,64 +115,7 @@
           ,▄█▀██▀▀▀█▀▀▀▀▀█▀▀▀▀▀▀█▀▀▀▀▀▀▀█▀▀▀▀▀▀█▀▀▀▀▀▀█▀▀▀▀▀█▀▀▀██▀██,
 
          ▄█▀ ▄▀   █▀    ▄▀     ╒█      ▐▌      ▀▄     ▐▌    └█   ▀▌ ▀██
-
-       ▄██ ┌█\`  ┌█     ▐▌      █∩      ▐▌      └█      ▀▄     █µ   ▀▄ ▀█▄
-
-      ██▀ ▄▌   ┌█     ┌█       █       ▐▌       █∩      █▄     █µ   ▀▄ ▐██
-
-    ┌██▀▀█▀▀▀▀▀█▀▀▀▀▀▀█▀▀▀▀▀▀▀▀▌▀▀▀▀▀▀▀▀▌▀▀▀▀▀▀▀▀▌▀▀▀▀▀▀▀█▀▀▀▀▀▀█▀▀▀▀▀█▀▀██▄
-
-   ╒██  ▄▀    █∩     ╞▌       █∩       ▐▌       └█       ▀⌡     └█    ▀▌  ██▄
-
-  ╒██  ╒█    ▐▌      █        █        ▐▌        █        █      ▐▌    ▀▄  ██▄
-
-  ██∩  █     █      ┌█       ┌█        ▐▌        █∩       █U      █     █  └██
-
- ███▀▀█▌▀▀▀▀██▀▀▀▀▀▀█▌▀▀▀▀▀▀▀▀█▀▀▀▀▀▀▀▀██▀▀▀▀▀▀▀▀█▌▀▀▀▀▀▀▀▀█▀▀▀▀▀▀▀█▀▀▀▀▀█▀▀███
-
-┌██   █     ▓       █        ▐▌        ▐▌        ▐▌        █       ▌     █   ██W
-
-▐▌█  ╞▌     █       █        ▐⌡        ▐▌        ▐▌        █       █     ▀⌡  █▓▌
-
-█▓▌  ▐▌    │▌       █        █⌡        ▐▌        │▌        █∩      ▀⌡    ▐▌  ▐▌█
-
-██⌡  █H    ▐▌      ┌█        █H        ▐▌        │▌        █H      ▐▌    │▌  ▐▌█
-
-██▀└└█▀└└└└▀▌└└└└└└▀█\`└└└└└└└█▀└└└└└└\`\`]▌\`└└└└└└└▐█└└└└└└└\`█▀└└└└└└▀▌└└└└▐█└└▐▌█
-
-█▓▌  ▐⌡    ▐▌       █        █H        ▐▌        │▌        █∩      ▐⌡    ▐▌  ▐▌█
-
-▀▓▌  ▐▌     █       █        ▐⌡        ▐▌        ▐▌        █       █∩    ▐▌  ▄▓▌
-
-╘██   █     █       █        ▐▌        ▐▌        ▐▌        █       █     █   ██▀
-
- ██▌▄▄█▄▄▄▄▄█▄▄▄▄▄▄▄█▄▄▄▄▄▄▄▄▄█▄▄▄▄▄▄▄▄▄█▄▄▄▄▄▄▄▄█▌▄▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█▄▄▄▄▄█▄▄▄██
-
- └██   █     █      ╘▌       └█        ▐▌        █∩       ▄⌡      █∩    █─  ██∩
-
-  ▐██  ▐▌    ▀▄      █        █        ▐▌        █        █      ▐▌    ▄▀  ██▀
-
-   ▐▌▓  ▀▄    █      ╞▌       █∩       ▐▌        █       ]▌      █    ╒█  ▄█▀
-
-    ▀██  █▄   └█      █       ▐▌       ▐▌       ▐▌       █      █▀   ╒█  ██▀
-
-     └██▀"▀█"""▀█▀""""▀█""""""└█"""""""▀▌"""""""█▀""""""█▀"""""█▀"""██"▐██▀
-
-       ▀█▄ ▀▓   └█     ▀▄      █∩      ▐▌      ┌█      ▐▌     ▄▀   ▄▀ ▄██
-
-        └██▄\`█▄  └█     ▀▄     ▐▌      ▐▌      ▐▀     ╒█     █"  ┌█"┌██▀
-
-          ▀██▄██▄▄▄█▄▄▄▄▄█▄▄▄▄▄▄█▄▄▄▄▄▄▄▌▄▄▄▄▄▄█▄▄▄▄▄▄█▄▄▄▄▄█▄▄▄▄█▄██▀
-
-            └▀█▄▀█, └█,   ▀▄    ╘█     ▐▌     ▄▀    ▄█   ,█▀ ,▄▀▄██▀
-
-               ▀████▄ ▀█▄  ▀█    ▀▄    ▐▌    ▐▌    ▄▀  ,▄▀ ▄██▄█▀
-
-                  ▀▀███▄██▄▄▄█▄▄▄▄█▄▄▄▄██▄▄▄▄█▄▄▄▄█▌▄▄██▄████▀
-
-                     \`▀▀█████▄▄▀▄, ▀▄  ▐▌  ▄█ ,▄▀,▄█████▀▀└
-
-                          \`▀▀▀████████████████████▀▀▀└
+         ...
 `;
 
     const lines = asciiArt.split("\n").concat([
@@ -216,6 +146,9 @@
     let currentLine = '';
     let output = '';
 
+    // показываем курсор сразу
+    terminal.innerHTML = '<span class="cursor"></span>';
+
     function typeLine() {
       if (lineIndex < lines.length) {
         currentLine = lines[lineIndex];
@@ -223,16 +156,15 @@
           output += currentLine[charIndex];
           terminal.innerHTML = output + '<span class="cursor"></span>';
           charIndex++;
-          setTimeout(typeLine, 3); // скорость печати для ASCII
+          setTimeout(typeLine, 2); // быстрее печать
         } else {
           output += '\n';
-          terminal.innerHTML = output;
+          terminal.innerHTML = output + '<span class="cursor"></span>';
           charIndex = 0;
           lineIndex++;
-          setTimeout(typeLine, 20);
+          setTimeout(typeLine, 15);
         }
       } else {
-        // Добавляем глитч-эффект для заголовков
         terminal.innerHTML = terminal.innerHTML
           .replace("qwent.net", `<span class="glitch" data-text="qwent.net">qwent.net</span>`)
           .replace("https://t.me/qwentmake", `<a href="https://t.me/qwentmake" target="_blank">https://t.me/qwentmake</a>`);
@@ -240,6 +172,7 @@
     }
 
     typeLine();
+  });
   </script>
 </body>
 </html>
